@@ -1,0 +1,2 @@
+from .ArtificialIntelligence import AIRepository
+ 
