@@ -19,8 +19,18 @@ class AccessesRepository:
             .where('date', '>=', today)
             .get())
         return doc.to_dict() if doc.exists else None
+
+
+    def create_access(self, data):
+        _, access = self._client.add(data)
+        return access.id
     
 
     def update_access_attempts(self, id, attempts: int):
         doc_ref = self._client.document(id)
         doc_ref.update({ 'attempts': attempts })
+
+    
+    def update_access_attempts(self, id, usage: int):
+        doc_ref = self._client.document(id)
+        doc_ref.update({ 'usage': usage })

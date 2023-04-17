@@ -1,11 +1,11 @@
 from src.app import UseCase
-from src.app.summaries import ExpiredResourceAccessError
 from src.infra.repositories import AccessesRepository
+from src.app.summaries.errors.expired_resource_access_error import ExpiredResourceAccessError
 
 
 class VerifyAccessToSummaryUseCase(UseCase):
-    def __init__(self, data):
-        self._ip = self._sanitize_ip(data.ip)
+    def __init__(self, ip):
+        self._ip = ip
         self._accesses_repository = AccessesRepository()
     
 
@@ -14,12 +14,5 @@ class VerifyAccessToSummaryUseCase(UseCase):
         if access:
             attempts = access.get('attempts', 0) + 1
             self._accesses_repository.update_access_attempts(access.id, attempts)
-        else:
-            raise ExpiredResourceAccessError('summary')
-    
-
-    def _sanitize_ip(self, ip):
-        fragments = ip.split('.')
-        for fragment in fragments:
-            ipSanitized += fragment
-        return ipSanitized
+            if access.usage >= access.limit:
+                raise ExpiredResourceAccessError('summary')

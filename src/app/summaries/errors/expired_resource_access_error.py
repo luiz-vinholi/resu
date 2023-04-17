@@ -7,5 +7,5 @@ class ExpiredResourceAccessError(Exception):
         self._resource = resource
 
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.message
