@@ -1,9 +1,8 @@
 import zlib
-import base64
-from typing import Any
+from base64 import b64encode
 from pydantic import BaseModel
 from src.interfaces import app
-from src.infra.repositories import AIRepository
+from src.app.summaries import CreateTextSummaryUseCase
 
 
 class CreateTextSummaryBody(BaseModel):
@@ -13,12 +12,10 @@ a = """A inteligência artificial está influenciando vários setores, inclusive
 
 Em entrevista à Medicina S/A, ele conta que, num futuro próximo, os dados individuais serão utilizados para guiar o paciente em suas decisões de saúde – o que, até então, era feito apenas por meio de pesqui­sas e evidências extraídas de grandes populações."""
 a = zlib.compress(a.encode())
-print(str(base64.b64encode(a), 'utf-8')) 
+print(str(b64encode(a), 'utf-8')) 
 
 @app.post('/summaries')
 def create_text_summary(body: CreateTextSummaryBody):
-    text = base64.b64decode(body.text)
-    text = zlib.decompress(text).decode()
-    print(text)
-    ai = AIRepository()
-    return ai.get_text_summary(text)
+    usecase = CreateTextSummaryUseCase(body.text)
+    data = usecase.execute()
+    return data
