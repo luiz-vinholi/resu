@@ -14,11 +14,13 @@ class AccessesRepository:
 
     def get_today_access_by_ip(self, ip):
         today = datetime.date.today()
+        today = datetime.datetime.combine(today, datetime.datetime.min.time())
         doc = (self._client
             .where('ip', '==', ip)
             .where('date', '>=', today)
             .get())
-        return doc.to_dict() if doc.exists else None
+        doc = next(iter(doc), None)
+        return {'id': doc.id, **doc.to_dict()} if doc else None
 
 
     def create_access(self, data):
@@ -31,6 +33,6 @@ class AccessesRepository:
         doc_ref.update({ 'attempts': attempts })
 
     
-    def update_access_attempts(self, id, usage: int):
+    def update_access_usage(self, id, usage: int):
         doc_ref = self._client.document(id)
         doc_ref.update({ 'usage': usage })

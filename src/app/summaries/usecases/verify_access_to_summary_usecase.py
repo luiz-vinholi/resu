@@ -10,9 +10,10 @@ class VerifyAccessToSummaryUseCase(UseCase):
     
 
     def execute(self):
-        access = self._accesses_repository.get_today_access_by_id(self._ip)
+        access = self._accesses_repository.get_today_access_by_ip(self._ip)
+        print(access)
         if access:
             attempts = access.get('attempts', 0) + 1
-            self._accesses_repository.update_access_attempts(access.id, attempts)
-            if access.usage >= access.limit:
+            self._accesses_repository.update_access_attempts(access['id'], attempts)
+            if access['usage'] >= access['limit']:
                 raise ExpiredResourceAccessError('summary')

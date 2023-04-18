@@ -14,9 +14,9 @@ class SetAccessToSummaryUseCase(UseCase):
         access = self._accesses_respository.get_today_access_by_ip(self._ip)
         if access:
             usage = access.get('usage', 0) + 1
-            self._accesses_respository.update_accesses(access.id, usage)
+            self._accesses_respository.update_access_usage(access['id'], usage)
         else:
-            today = datetime.date.today()
+            today = datetime.datetime.now()
             data = {
                 'ip': self._ip,
                 'date': today,
@@ -24,4 +24,4 @@ class SetAccessToSummaryUseCase(UseCase):
                 'usage': 1,
                 'limit': self._access_limit
             }
-            self._accesses_respository.create_accesses(data)
+            self._accesses_respository.create_access(data)
