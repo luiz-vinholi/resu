@@ -6,7 +6,6 @@ from starlette.middleware.base import BaseHTTPMiddleware
 class VerifyRequesterAccessToResource(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         headers = dict(request.headers)
-        print(headers)
 
         try:
             ip = self._sanitize_ip(headers['ip'])
