@@ -12,6 +12,7 @@ python-dotenv = "*"
 fastapi = "*"
 pydantic = "*"
 firebase-admin = "*"
+email-validator = "*"
 
 [dev-packages]
 

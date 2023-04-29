@@ -1,5 +1,5 @@
 import datetime
-from src.infra.databases.firestore import db
+from src.infra.databases.firebase import db
 
 
 class AccessesRepository:

@@ -1,4 +1,6 @@
-from firebase_admin import credentials, initialize_app, firestore
+import os
+from firebase_admin import credentials, initialize_app, firestore, auth
+
 
 config = credentials.Certificate('firebase-credentials.json')
 
