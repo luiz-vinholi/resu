@@ -11,7 +11,6 @@ class VerifyAccessToSummaryUseCase(UseCase):
 
     def execute(self):
         access = self._accesses_repository.get_today_access_by_ip(self._ip)
-        print(access)
         if access:
             attempts = access.get('attempts', 0) + 1
             self._accesses_repository.update_access_attempts(access['id'], attempts)

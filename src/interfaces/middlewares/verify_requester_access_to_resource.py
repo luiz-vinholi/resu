@@ -1,6 +1,8 @@
 from fastapi import Request, HTTPException
 from src.app.summaries import VerifyAccessToSummaryUseCase, SetAccessToSummaryUseCase
+from fastapi import HTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
+from src.app.summaries import ExpiredResourceAccessError
 
 
 class VerifyRequesterAccessToResource(BaseHTTPMiddleware):
@@ -12,10 +14,12 @@ class VerifyRequesterAccessToResource(BaseHTTPMiddleware):
         except KeyError:
             raise HTTPException(400, detail='The "ip" in header request is required.')
 
-
-        VerifyAccessToSummaryUseCase(ip).execute()
-        response = await call_next(request)
-        SetAccessToSummaryUseCase(ip).execute()
+        try:
+            VerifyAccessToSummaryUseCase(ip).execute()
+            response = await call_next(request)
+            SetAccessToSummaryUseCase(ip).execute()
+        except ExpiredResourceAccessError as err:
+            raise HTTPException(status_code=403, detail=err)
 
         return response
     

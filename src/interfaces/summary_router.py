@@ -1,7 +1,7 @@
 import zlib
 from base64 import b64encode
 from pydantic import BaseModel
-from src.app.summaries import CreateTextSummaryUseCase
+from src.app.summaries import CreateTextSummaryUseCase, ExpiredResourceAccessError
 from src.interfaces.middlewares.verify_requester_access_to_resource import VerifyRequesterAccessToResource
 
 
@@ -15,7 +15,7 @@ def set_summary_router(app):
     a = zlib.compress(a.encode())
     print(str(b64encode(a), 'utf-8')) 
 
-    # app.add_middleware(VerifyRequesterAccessToResource)
+    app.add_middleware(VerifyRequesterAccessToResource)
 
     @app.post('/summaries')
     def create_text_summary(body: CreateTextSummaryBody):
