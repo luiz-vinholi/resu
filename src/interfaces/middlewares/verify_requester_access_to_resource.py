@@ -19,7 +19,7 @@ class VerifyRequesterAccessToResource(BaseHTTPMiddleware):
             response = await call_next(request)
             SetAccessToSummaryUseCase(ip).execute()
         except ExpiredResourceAccessError as err:
-            raise HTTPException(status_code=403, detail=err)
+            raise HTTPException(status_code=403, detail=err.to_dict())
 
         return response
     

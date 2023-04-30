@@ -1,6 +1,5 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-from starlette.exceptions import HTTPException as StarletteHTTPException
 from .auth_router import set_auth_router
 from .summary_router import set_summary_router
 
@@ -13,14 +12,18 @@ async def get_hello_world():
 
 
 @app.exception_handler(Exception)
-async def http_exception_handler(request, error):
+async def http_exception_handler(_, error):
     try:
         status_code = error.status_code
-    except KeyError:
+    except AttributeError:
         status_code = 500
-    print('vai se fude')
-    repr(error)
-    # return JSONResponse({'detail': error.code}, status_code=status_code)
+
+    try:
+        detail = error.detail
+    except AttributeError:
+        detail = error.message
+
+    return JSONResponse({'detail': detail}, status_code=status_code)
     
 
 set_auth_router(app)

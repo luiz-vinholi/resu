@@ -1,11 +1,15 @@
-class ExpiredResourceAccessError(Exception):
+from src.app import CustomError
+
+
+class ExpiredResourceAccessError(CustomError):
     def __init__(self, resource: str):
         message = f'The access to {resource} resource has expired by the number of uses in a day'
-        super().__init__(message)
+        code = 'expired-resource-access'
+        super().__init__(message=message, code=code)
         self.message = message 
-        self.code = 'expired-resource-access'
+        self.code = code
         self._resource = resource
 
 
     def __str__(self):
-        return self.message
+        return f'{self.code}: {self.message}'
