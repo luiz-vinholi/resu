@@ -18,6 +18,7 @@ async def http_exception_handler(_, error):
     except AttributeError:
         status_code = 500
 
+    print(error)
     try:
         detail = error.detail
     except AttributeError:

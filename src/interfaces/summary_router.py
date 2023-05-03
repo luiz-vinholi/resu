@@ -15,10 +15,10 @@ def set_summary_router(app):
     a = zlib.compress(a.encode())
     print(str(b64encode(a), 'utf-8')) 
 
-    app.add_middleware(VerifyRequesterAccessToResource)
+    # app.add_middleware(VerifyRequesterAccessToResource)
 
     @app.post('/summaries')
     def create_text_summary(body: CreateTextSummaryBody):
         usecase = CreateTextSummaryUseCase(body.text)
-        data = usecase.execute()
-        return data
+        summary = usecase.execute()
+        return { 'summary': summary }

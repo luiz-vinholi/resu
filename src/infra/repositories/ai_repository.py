@@ -17,7 +17,6 @@ class AIRepository:
             prompt=content_message,
             max_tokens=1000,
             stop=None,
-            # presence_penalty=-1,
             frequency_penalty=1
         )
         return data
