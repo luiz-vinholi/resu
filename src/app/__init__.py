@@ -14,6 +14,10 @@ class CustomError(Exception):
         super().__init__(message)
         self.message = message
         self.code = code
+
+    
+    def __str__(self):
+        return f'{self.code}: {self.message}'
     
     
     def to_dict(self):

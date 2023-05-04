@@ -1,6 +1,6 @@
 from src.app import UseCase
 from src.infra.repositories import AccessesRepository
-from src.app.summaries.errors.expired_resource_access_error import ExpiredResourceAccessError
+from src.app.summaries.errors import ExpiredResourceAccessError
 
 
 class VerifyAccessToSummaryUseCase(UseCase):

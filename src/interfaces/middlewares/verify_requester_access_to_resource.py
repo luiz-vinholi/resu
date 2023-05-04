@@ -1,8 +1,8 @@
-from fastapi import Request, HTTPException
+from fastapi import HTTPException
 from src.app.summaries import VerifyAccessToSummaryUseCase, SetAccessToSummaryUseCase
 from fastapi import HTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
-from src.app.summaries import ExpiredResourceAccessError
+from src.app.summaries.errors import ExpiredResourceAccessError
 
 
 class VerifyRequesterAccessToResource(BaseHTTPMiddleware):

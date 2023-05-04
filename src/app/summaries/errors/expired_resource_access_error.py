@@ -9,7 +9,3 @@ class ExpiredResourceAccessError(CustomError):
         self.message = message 
         self.code = code
         self._resource = resource
-
-
-    def __str__(self):
-        return f'{self.code}: {self.message}'
