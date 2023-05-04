@@ -20,7 +20,7 @@ class CreateTextSummaryUseCase(UseCase):
         self._verify_word_quantity(text)
 
         data = self._ai_respository.get_text_summary(text)
-        summary = next(iter(data['choices']))['text']
+        summary = next(iter(data['choices']))['message']['content']
         summary = summary.strip()
         self._summary = summary
 
@@ -41,5 +41,6 @@ class CreateTextSummaryUseCase(UseCase):
 
     def _verify_word_quantity(self, text):
         word_quantity = len(text.split())
+        print(word_quantity)
         if word_quantity > self._word_quantity_limit:
             raise SummaryWordLimitExceededError()
