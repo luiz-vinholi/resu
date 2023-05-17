@@ -13,6 +13,7 @@ fastapi = "*"
 pydantic = "*"
 firebase-admin = "*"
 email-validator = "*"
+uvicorn = "*"
 
 [dev-packages]
 

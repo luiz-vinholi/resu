@@ -7,12 +7,10 @@ from src.app.summaries.errors import ExpiredResourceAccessError
 
 class VerifyRequesterAccessToResource(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
-        headers = dict(request.headers)
-
         try:
-            ip = self._sanitize_ip(headers['ip'])
+            ip = self._sanitize_ip(request.client.host)
         except KeyError:
-            raise HTTPException(400, detail='The "ip" in header request is required.')
+            raise HTTPException(400, detail='The "ip" in request is required.')
 
         try:
             VerifyAccessToSummaryUseCase(ip).execute()
