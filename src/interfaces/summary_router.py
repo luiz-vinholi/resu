@@ -1,6 +1,5 @@
-import zlib
-from base64 import b64encode
 from fastapi import HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from src.app.summaries import CreateTextSummaryUseCase
 from src.app.summaries.errors import SummaryWordLimitExceededError
@@ -12,6 +11,13 @@ def set_summary_router(app):
         text: str
 
     app.add_middleware(VerifyRequesterAccessToResource)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=['*'],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
     @app.post('/summaries')
     def create_text_summary(body: CreateTextSummaryBody):
