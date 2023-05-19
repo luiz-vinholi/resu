@@ -8,9 +8,8 @@ from src.app.summaries.errors import ExpiredResourceAccessError
 class VerifyRequesterAccessToResource(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         try:
-            ip = request.headers.get('X-Forwarded-For')
-            print(f'IP ---------- {ip}')
-            ip = self._sanitize_ip(request.client.host)
+            ip = request.headers.get('X-Forwarded-For').split(', ')[0]
+            ip = self._sanitize_ip(ip)
         except KeyError:
             raise HTTPException(400, detail='The "ip" in request is required.')
 
